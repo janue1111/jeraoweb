@@ -9,7 +9,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ArrowRight, BarChart, CheckCircle, GanttChartSquare, Search, Settings2, ShieldCheck, Download, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
-const faqItems = [
+type FaqItem = {
+  question: string;
+  answer: string;
+};
+
+const faqItems: FaqItem[] = [
   {
     question: '¿Cuánto tiempo se tarda en ver resultados?',
     answer: 'Una vez implementado el seguimiento, empezarás a recoger datos fiables inmediatamente. Los insights y mejoras en el rendimiento de tus campañas suelen ser visibles en las primeras semanas, a medida que acumulamos suficiente información para tomar decisiones.',
@@ -32,7 +37,7 @@ const faqItems = [
   },
 ];
 
-function FaqItem({ item }) {
+function FaqItem({ item }: { item: FaqItem }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
