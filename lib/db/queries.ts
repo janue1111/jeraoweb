@@ -2,6 +2,7 @@
 // import { db } from './drizzle';
 // import { activityLogs, teamMembers, teams, users } from './schema';
 import { cookies } from 'next/headers';
+import type { ActivityLog } from './schema';
 // import { verifyToken } from '@/lib/auth/session';
 
 export async function getUser() {
@@ -81,7 +82,7 @@ export async function getUserWithTeam(userId: number) {
   return null;
 }
 
-export async function getActivityLogs() {
+export async function getActivityLogs(): Promise<ActivityLog[]> {
   // const user = await getUser();
   // if (!user) {
   //   throw new Error('User not authenticated');
