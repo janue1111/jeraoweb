@@ -2,10 +2,10 @@
 // import { db } from './drizzle';
 // import { activityLogs, teamMembers, teams, users } from './schema';
 import { cookies } from 'next/headers';
-import type { ActivityLog } from './schema';
+import type { ActivityLog, Team, TeamDataWithMembers, User } from './schema';
 // import { verifyToken } from '@/lib/auth/session';
 
-export async function getUser() {
+export async function getUser(): Promise<User | null> {
   // const sessionCookie = (await cookies()).get('session');
   // if (!sessionCookie || !sessionCookie.value) {
   //   return null;
@@ -38,7 +38,9 @@ export async function getUser() {
   return null;
 }
 
-export async function getTeamByStripeCustomerId(customerId: string) {
+export async function getTeamByStripeCustomerId(
+  customerId: string,
+): Promise<Team | null> {
   // const result = await db
   //   .select()
   //   .from(teams)
@@ -56,8 +58,8 @@ export async function updateTeamSubscription(
     stripeProductId: string | null;
     planName: string | null;
     subscriptionStatus: string;
-  }
-) {
+  },
+): Promise<void> {
   // await db
   //   .update(teams)
   //   .set({
@@ -67,7 +69,9 @@ export async function updateTeamSubscription(
   //   .where(eq(teams.id, teamId));
 }
 
-export async function getUserWithTeam(userId: number) {
+export async function getUserWithTeam(
+  userId: number,
+): Promise<{ user: User; teamId: number | null } | null> {
   // const result = await db
   //   .select({
   //     user: users,
@@ -104,7 +108,7 @@ export async function getActivityLogs(): Promise<ActivityLog[]> {
   return [];
 }
 
-export async function getTeamForUser() {
+export async function getTeamForUser(): Promise<TeamDataWithMembers | null> {
   // const user = await getUser();
   // if (!user) {
   //   return null;
