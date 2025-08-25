@@ -7,9 +7,19 @@ import {
   updateTeamSubscription
 } from '@/lib/db/queries';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-04-30.basil'
-});
+let stripe: Stripe | null = null;
+
+const getStripe = (): Stripe => {
+  if (!stripe) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('STRIPE_SECRET_KEY is not set in environment variables');
+    }
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-04-30.basil'
+    });
+  }
+  return stripe;
+};
 
 export async function createCheckoutSession({
   team,
@@ -24,7 +34,8 @@ export async function createCheckoutSession({
     redirect(`/sign-up?redirect=checkout&priceId=${priceId}`);
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const stripeClient = getStripe();
+  const session = await stripeClient.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: [
       {
@@ -51,18 +62,19 @@ export async function createCustomerPortalSession(team: Team) {
     redirect('/pricing');
   }
 
+  const stripeClient = getStripe();
   let configuration: Stripe.BillingPortal.Configuration;
-  const configurations = await stripe.billingPortal.configurations.list();
+  const configurations = await stripeClient.billingPortal.configurations.list();
 
   if (configurations.data.length > 0) {
     configuration = configurations.data[0];
   } else {
-    const product = await stripe.products.retrieve(team.stripeProductId);
+    const product = await stripeClient.products.retrieve(team.stripeProductId);
     if (!product.active) {
       throw new Error("Team's product is not active in Stripe");
     }
 
-    const prices = await stripe.prices.list({
+    const prices = await stripeClient.prices.list({
       product: product.id,
       active: true
     });
@@ -70,7 +82,7 @@ export async function createCustomerPortalSession(team: Team) {
       throw new Error("No active prices found for the team's product");
     }
 
-    configuration = await stripe.billingPortal.configurations.create({
+    configuration = await stripeClient.billingPortal.configurations.create({
       business_profile: {
         headline: 'Manage your subscription'
       },
@@ -107,7 +119,7 @@ export async function createCustomerPortalSession(team: Team) {
     });
   }
 
-  return stripe.billingPortal.sessions.create({
+  return stripeClient.billingPortal.sessions.create({
     customer: team.stripeCustomerId,
     return_url: `${process.env.BASE_URL}/dashboard`,
     configuration: configuration.id
@@ -147,7 +159,8 @@ export async function handleSubscriptionChange(
 }
 
 export async function getStripePrices() {
-  const prices = await stripe.prices.list({
+  const stripeClient = getStripe();
+  const prices = await stripeClient.prices.list({
     expand: ['data.product'],
     active: true,
     type: 'recurring'
@@ -165,7 +178,8 @@ export async function getStripePrices() {
 }
 
 export async function getStripeProducts() {
-  const products = await stripe.products.list({
+  const stripeClient = getStripe();
+  const products = await stripeClient.products.list({
     active: true,
     expand: ['data.default_price']
   });
@@ -180,3 +194,6 @@ export async function getStripeProducts() {
         : product.default_price?.id
   }));
 }
+
+// Also export getStripe for use in other files like webhooks
+export { getStripe };
