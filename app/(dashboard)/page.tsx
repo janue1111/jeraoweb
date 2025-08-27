@@ -65,7 +65,16 @@ function LeadMagnetForm() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you could add logic to save the name and email
+    
+    if (typeof window.dataLayer !== 'undefined') {
+      window.dataLayer.push({
+        event: 'generate_lead',
+        form_name: 'checklist_form',
+        user_name: name,
+        user_email: email,
+      });
+    }
+
     router.push('/checklist');
   };
 
@@ -73,7 +82,22 @@ function LeadMagnetForm() {
     <form onSubmit={handleSubmit} className="mt-8 max-w-md mx-auto flex flex-col gap-4">
       <Input type="text" placeholder="Tu nombre" value={name} onChange={(e) => setName(e.target.value)} required />
       <Input type="email" placeholder="Tu mejor correo electrónico" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <Button type="submit" size="lg" className="bg-red-600 hover:bg-red-700">¡Lo quiero!</Button>
+      <Button 
+        type="submit" 
+        size="lg" 
+        className="bg-red-600 hover:bg-red-700"
+        onClick={() => {
+          if (typeof window.dataLayer !== 'undefined') {
+            window.dataLayer.push({
+              event: 'button_click',
+              button_text: '¡Lo quiero!',
+              button_location: 'lead_magnet_form',
+            });
+          }
+        }}
+      >
+        ¡Lo quiero!
+      </Button>
     </form>
   );
 }
@@ -92,9 +116,20 @@ export default function HomePage() {
             Deja de perder dinero con campañas que no funcionan. Te ofrezco un sistema de medición claro y preciso con <strong>Google Tag Manager</strong> y <strong>GA4</strong> para que sepas exactamente qué funciona y cómo optimizar tu inversión.
           </p>
           <div className="mt-8">
-            <Button size="lg" className="text-xl rounded-full bg-red-600 hover:bg-red-700 px-10 py-8">
-              Solicitar Auditoría Gratis
-              <ArrowRight className="ml-3 h-6 w-6" />
+            <Button size="lg" className="text-xl rounded-full bg-red-600 hover:bg-red-700 px-10 py-8" asChild>
+              <a href="https://wa.me/51992748352?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20estoy%20interesado%2Fa%20en%20solicitar%20el%20an%C3%A1lisis%20t%C3%A9cnico%20gratuito." target="_blank" rel="noopener noreferrer" onClick={() => {
+                if (typeof window.dataLayer !== 'undefined') {
+                  window.dataLayer.push({
+                    event: 'button_click',
+                    button_text: 'Análisis Técnico Gratuito',
+                    button_location: 'hero',
+                    button_url: 'https://wa.me/51992748352?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20estoy%20interesado%2Fa%20en%20solicitar%20el%20an%C3%A1lisis%20t%C3%A9cnico%20gratuito.'
+                  });
+                }
+              }}>
+                Análisis Técnico Gratuito
+                <ArrowRight className="ml-3 h-6 w-6" />
+              </a>
             </Button>
           </div>
         </div>
@@ -219,8 +254,19 @@ export default function HomePage() {
             Es normal. Hablemos 15 minutos sin compromiso y resolveré todas tus preguntas. El peor caso es que te lleves un par de consejos gratis. El mejor, que empecemos a transformar tu negocio.
           </p>
           <div className="mt-8">
-            <Button size="lg" className="text-lg rounded-full bg-red-600 hover:bg-red-700">
-              Agendar Consulta Estratégica
+            <Button size="lg" className="text-lg rounded-full bg-red-600 hover:bg-red-700" asChild>
+              <a href="https://wa.me/51992748352?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20estrat%C3%A9gica.%20Quedo%20a%20la%20espera%20de%20los%20pr%C3%B3ximos%20pasos%20para%20coordinar." target="_blank" rel="noopener noreferrer" onClick={() => {
+                if (typeof window.dataLayer !== 'undefined') {
+                  window.dataLayer.push({
+                    event: 'button_click',
+                    button_text: 'Agendar Consulta Estratégica',
+                    button_location: 'footer',
+                    button_url: 'https://wa.me/51992748352?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20estrat%C3%A9gica.%20Quedo%20a%20la%20espera%20de%20los%20pr%C3%B3ximos%20pasos%20para%20coordinar.'
+                  });
+                }
+              }}>
+                Agendar Consulta Estratégica
+              </a>
             </Button>
           </div>
         </div>
@@ -228,8 +274,19 @@ export default function HomePage() {
 
       {/* Sticky CTA */}
       <div className="sticky bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm p-4 border-t border-gray-200 shadow-lg md:hidden">
-        <Button size="lg" className="w-full bg-red-600 hover:bg-red-700">
-            Auditoría Gratis
+        <Button size="lg" className="w-full bg-red-600 hover:bg-red-700" asChild>
+            <a href="https://wa.me/51992748352?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20estoy%20interesado%2Fa%20en%20solicitar%20el%20an%C3%A1lisis%20t%C3%A9cnico%20gratuito." target="_blank" rel="noopener noreferrer" onClick={() => {
+              if (typeof window.dataLayer !== 'undefined') {
+                window.dataLayer.push({
+                  event: 'button_click',
+                  button_text: 'Análisis Técnico Gratuito',
+                  button_location: 'sticky_mobile',
+                  button_url: 'https://wa.me/51992748352?text=Hola%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20estoy%20interesado%2Fa%20en%20solicitar%20el%20an%C3%A1lisis%20t%C3%A9cnico%20gratuito.'
+                });
+              }
+            }}>
+                Análisis Técnico Gratuito
+            </a>
         </Button>
       </div>
     </main>

@@ -1,4 +1,5 @@
-import Link from 'next/link';
+'use client';
+
 import { Button } from '@/components/ui/button';
 
 export default function ChecklistPage() {
@@ -119,11 +120,20 @@ export default function ChecklistPage() {
       </p>
 
       <div className="mt-8 text-center">
-        <Link href="/" passHref>
-          <Button size="lg" className="text-xl rounded-full bg-red-600 hover:bg-red-700 px-10 py-8">
-            QUIERO SABER MÁS
-          </Button>
-        </Link>
+        <Button size="lg" className="text-xl rounded-full bg-red-600 hover:bg-red-700 px-10 py-8" asChild>
+          <a href="https://wa.me/51992748352?text=Hola%2C%20he%20revisado%20tu%20checklist%20y%20estoy%20interesado%2Fa%20en%20agendar%20una%20consulta%20estrat%C3%A9gica.%20Para%20ir%20avanzando%2C%20te%20comparto%20la%20URL%20de%20mi%20sitio%20web%3A%20" target="_blank" rel="noopener noreferrer" onClick={() => {
+            if (typeof window.dataLayer !== 'undefined') {
+              window.dataLayer.push({
+                event: 'button_click',
+                button_text: 'Agendar mi Consulta Estratégica',
+                button_location: 'checklist_cta',
+                button_url: 'https://wa.me/51992748352?text=Hola%2C%20he%20revisado%20tu%20checklist%20y%20estoy%20interesado%2Fa%20en%20agendar%20una%20consulta%20estrat%C3%A9gica.%20Para%20ir%20avanzando%2C%20te%20comparto%20la%20URL%20de%20mi%20sitio%20web%3A%20'
+              });
+            }
+          }}>
+            Agendar mi Consulta Estratégica
+          </a>
+        </Button>
       </div>
     </div>
   );
