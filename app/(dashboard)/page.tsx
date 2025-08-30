@@ -113,7 +113,7 @@ export default function HomePage() {
             <span className="block text-red-600">Yo te ayudo a convertirlos en ventas.</span>
           </h1>
           <p className="mt-5 max-w-2xl mx-auto text-xl text-gray-500">
-            Deja de perder dinero con campañas que no funcionan. Te ofrezco un sistema de medición claro y preciso con <strong>Google Tag Manager</strong> y <strong>GA4</strong> para que sepas exactamente qué funciona y cómo optimizar tu inversión.
+            Deja de perder dinero con campañas ineficaces. Te ofrezco un sistema de medición claro y preciso con <strong>Google Tag Manager</strong> y <strong>GA4</strong> para que identifiques qué funciona y optimices cada peso invertido.
           </p>
           <div className="mt-8">
             <Button size="lg" className="text-xl rounded-full bg-red-600 hover:bg-red-700 px-10 py-8" asChild>
